@@ -5,6 +5,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { SleepRecordRoutingModule } from './sleep-record-routing.module';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { MatCardModule } from '@angular/material/card';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   declarations: [SleepRecordComponent],
@@ -13,7 +14,19 @@ import { MatCardModule } from '@angular/material/card';
     MatTabsModule,
     SleepRecordRoutingModule,
     MatCardModule,
-    NgCircleProgressModule.forRoot(),
+    NgxChartsModule,
+    NgCircleProgressModule.forRoot({
+      radius: 35,
+      space: -5,
+      outerStrokeWidth: 5,
+      innerStrokeWidth: 5,
+      animation: true,
+      animationDuration: 300,
+      showSubtitle: false,
+      titleFontWeight: '700',
+      unitsFontSize: '20',
+      outerStrokeGradient: true,
+    }),
   ],
 })
 export class SleepRecordModule {}

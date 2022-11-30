@@ -1,8 +1,8 @@
 .body {
     padding: 10px;
     width: 285px;
-    background: rgb(202, 202, 202);
 }
+
 .header {
     display: flex;
     justify-content: space-between;
@@ -10,19 +10,23 @@
         content: "\223F";
     }
 }
+
 .mat-card {
     width: 105px;
 }
+
 .row {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
+
 .progress {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
 .large-text {
     font-weight: bolder;
     font-size: x-large;
@@ -31,8 +35,7 @@
         font-size: medium;
     }
 }
-.time-period {
-}
+
 .btn {
     border-radius: 18px;
     box-sizing: border-box;
@@ -44,26 +47,52 @@
     font-family: Inter, Helvetica, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Noto Color Emoji",
         "Segoe UI Symbol", "Android Emoji", EmojiSymbols, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue",
         "Noto Sans", sans-serif;
-    font-size: 16px;
+    font-size: 12px;
     font-weight: 400;
     line-height: 18px;
     opacity: 1;
     outline: 0 solid transparent;
-    padding: 5px 18px;
+    padding: 2px 16px;
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
-    width: fit-content;
     word-break: break-word;
     border: 0;
 }
 
 .details-btn {
-    background-color: #fd4545;
+    background-color: #ff7497;
 }
+
 .status-btn {
-    background-color: #2e54ff;
+    background-color: #3d86ff;
 }
+
 .grey {
-    color: grey;
+    color: #c2c4d1;
+}
+
+.dark-mode {
+    background-color: #1a2144;
+    color: white;
+}
+
+.light-mode {
+    background-color: white;
+    color: black;
+}
+
+.mat-tab-group.mat-primary .mat-ink-bar,
+.mat-tab-nav-bar.mat-primary .mat-ink-bar {
+    background: rgb(241, 76, 241);
+    background: linear-gradient(90deg, #f14cf1 0%, #8728fb 75%);
+
+    height: 5px;
+    border-radius: 100px;
+    margin-bottom: 5px;
+}
+
+.mat-tab-label {
+    min-width: 0 !important;
+    width: 95px !important;
 }

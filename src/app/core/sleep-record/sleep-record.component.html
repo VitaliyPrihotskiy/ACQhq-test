@@ -1,36 +1,72 @@
 <div class="body">
   <div class="header">Sleep Record <span></span></div>
 
-  <mat-tab-group mat-stretch-tabs animationDuration="0ms">
-    <mat-tab label="Day">Content 1</mat-tab>
+  <mat-tab-group animationDuration="0ms" [disablePagination]="true">
+    <mat-tab label="Day">
+      <!-- <ngx-charts-line-chart
+        [animations]="true"
+        [legend]="false"
+        [showXAxisLabel]="false"
+        [showYAxisLabel]="false"
+        [xAxis]="true"
+        [yAxis]="true"
+        [timeline]="false"
+        [results]="lineData"
+        [showGridLines]="false"
+        [roundDomains]="true"
+        [timeline]="false"
+      >
+      </ngx-charts-line-chart> -->
+
+      <ngx-charts-bar-vertical
+        [animations]="true"
+        [results]="data"
+        [xAxis]="true"
+        [rotateXAxisTicks]="true"
+        [gradient]="true"
+        [showGridLines]="false"
+      ></ngx-charts-bar-vertical>
+    </mat-tab>
     <mat-tab label="Week">Content 2</mat-tab>
     <mat-tab label="Month">Content 3</mat-tab>
   </mat-tab-group>
   <div class="sleep-status">
-    <p class="time-period">
+    <h3>
       {{ datesRange[0] | date: "MMM d" }} -
       {{ datesRange[1] | date: "MMM d, y" }}
-    </p>
+    </h3>
 
     <div class="row">
-      <mat-card class="mat-card">
-        <mat-card-subtitle>Average Time</mat-card-subtitle>
+      <mat-card
+        class="mat-card"
+        [ngClass]="{
+          'dark-mode': darkMode$ | async,
+          'light-mode': !(darkMode$ | async)
+        }"
+      >
+        <mat-card-subtitle class="grey">Average Time</mat-card-subtitle>
         <mat-card-content>
-          <p class="large-text">{{ averageTime }}</p>
-        </mat-card-content>
-        <mat-card-actions>
+          <p>
+            <span class="large-text">{{ averageTime }}</span>
+          </p>
           <button class="btn details-btn">Details</button>
-        </mat-card-actions>
-      </mat-card>
-      <mat-card class="mat-card">
-        <mat-card-subtitle>Sleep Quality</mat-card-subtitle>
-        <mat-card-content>
-          <span class="large-text">{{ sleepQuality }}/</span
-          ><span class="subtext">100</span>
         </mat-card-content>
-        <mat-card-actions>
+      </mat-card>
+      <mat-card
+        class="mat-card"
+        [ngClass]="{
+          'dark-mode': darkMode$ | async,
+          'light-mode': !(darkMode$ | async)
+        }"
+      >
+        <mat-card-subtitle class="grey">Sleep Quality</mat-card-subtitle>
+        <mat-card-content>
+          <p>
+            <span class="large-text">{{ sleepQuality }}/</span
+            ><span class="subtext">100</span>
+          </p>
           <button class="btn status-btn">Good</button>
-        </mat-card-actions>
+        </mat-card-content>
       </mat-card>
     </div>
   </div>
@@ -40,18 +76,9 @@
       <div class="progress" *ngFor="let sleepingState of sleepingStates">
         <circle-progress
           [percent]="sleepingState.rate"
-          [radius]="35"
-          [space]="-5"
-          [outerStrokeWidth]="5"
-          [innerStrokeWidth]="5"
-          [outerStrokeColor]="'#78C000'"
-          [innerStrokeColor]="'#C7E596'"
-          [animation]="true"
-          [animationDuration]="300"
-          [showSubtitle]="false"
-          [titleFontWeight]="'700'"
-          [outerStrokeGradient]="true"
-          [innerStrokeColor]="'#e7e8ea'"
+          [titleColor]="(darkMode$ | async) ? '#fafbfb' : '#0d1239'"
+          [unitsColor]="(darkMode$ | async) ? '#fafbfb' : '#0d1239'"
+          [innerStrokeColor]="(darkMode$ | async) ? '#353958' : '#f4f4f6'"
           [outerStrokeColor]="sleepingState.outerStrokeColor"
           [outerStrokeGradientStopColor]="
             sleepingState.outerStrokeGradientStopColor
@@ -61,4 +88,5 @@
       </div>
     </div>
   </div>
+  <button (click)="onToggle()">change mode</button>
 </div>
