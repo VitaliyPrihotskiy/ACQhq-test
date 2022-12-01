@@ -1,6 +1,9 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
 import { DarkModeService } from 'angular-dark-mode';
+import { curveBasis } from 'd3-shape';
 import { Observable, Subject, takeUntil } from 'rxjs';
+import { dayCustomColors, dayData, dayDataLine, monthCustomColors, monthData, monthDataLine, sleepingStates, weekCustomColors, weekData, weekDataLine } from './data';
 
 @Component({
   selector: 'app-sleep-record',
@@ -9,75 +12,21 @@ import { Observable, Subject, takeUntil } from 'rxjs';
   encapsulation: ViewEncapsulation.None,
 })
 export class SleepRecordComponent implements OnInit {
+  chartView = true;
   private readonly ngUnsubscribe = new Subject<void>();
   matTabLabel: HTMLElement[] | null = null;
   darkMode$: Observable<boolean> = this.darkModeService.darkMode$;
   datesRange = [new Date(Date.now() - 604800000), Date.now()];
   averageTime = '7h 30m';
   sleepQuality = 85;
-  sleepingStates = [
-    {
-      rate: 20,
-      name: 'Awake',
-      outerStrokeColor: '#fac770',
-      outerStrokeGradientStopColor: '#e83f75',
-    },
-    {
-      rate: 50,
-      name: 'Light',
-      outerStrokeColor: '#f94ff0',
-      outerStrokeGradientStopColor: '#7e24fc',
-    },
-    {
-      rate: 30,
-      name: 'Deep',
-      outerStrokeColor: '#3c81e8',
-      outerStrokeGradientStopColor: '#2c3ff3',
-    },
-  ];
+  sleepingStates = sleepingStates;
+  data = [dayData, weekData, monthData];
+  dataLine = [dayDataLine, weekDataLine, monthDataLine];
+  customColors = [dayCustomColors, weekCustomColors, monthCustomColors];
 
-  data = [
-    {
-      name: 'Mon',
-      value: 40,
-    },
-    {
-      name: 'Tue',
-      value: 50,
-    },
-    {
-      name: 'Wed',
-      value: 50,
-    },
-    {
-      name: 'Thr',
-      value: 50,
-    },
-    {
-      name: 'Fri',
-      value: 50,
-    },
-    {
-      name: 'Sat',
-      value: 50,
-    },
-    {
-      name: 'Sun',
-      value: 50,
-    },
-  ];
+  curve:any=curveBasis;
 
-  lineData = [
-    {
-      name: '',
-      series: [...this.data],
-    },
-  ];
-  colorScheme = {
-    domain: ['#9370DB', '#87CEFA', '#FA8072', '#FF7F50', '#90EE90', '#9370DB']
-  };
-
-  constructor(private darkModeService: DarkModeService) {}
+  constructor(private darkModeService: DarkModeService, private router: Router) {}
 
   ngOnInit(): void {
     setTimeout(() => {
@@ -100,6 +49,13 @@ export class SleepRecordComponent implements OnInit {
 
   onToggle(): void {
     this.darkModeService.toggle();
-    // this.matTabLabel?.style.color =
+  }
+
+  changeView(): void {
+    this.chartView = this.chartView ? false : true;
+  }
+
+  goToWatchList(): void {
+    this.router.navigate(['watch-list']);
   }
 }

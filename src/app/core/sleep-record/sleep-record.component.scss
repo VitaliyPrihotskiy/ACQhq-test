@@ -6,8 +6,8 @@
 .header {
     display: flex;
     justify-content: space-between;
-    span:after {
-        content: "\223F";
+    span:hover {
+        cursor: pointer;
     }
 }
 
@@ -19,6 +19,9 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+.left {
+    justify-content: start;
 }
 
 .progress {
@@ -70,6 +73,7 @@
 
 .grey {
     color: #c2c4d1;
+    font-size: 11.62px;
 }
 
 .dark-mode {
@@ -95,4 +99,19 @@
 .mat-tab-label {
     min-width: 0 !important;
     width: 95px !important;
+}
+
+.circleBase {
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    margin: 0 10px;
+}
+
+.type1 {
+    background: linear-gradient(90deg, #f94ff0 0%, #7e24fc 100%);
+}
+
+.type2 {
+    background: linear-gradient(90deg, #fac770 0%, #e83f75 100%);
 }
