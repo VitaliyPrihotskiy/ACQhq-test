@@ -1,9 +1,27 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { DarkModeService } from 'angular-dark-mode';
 import { curveBasis } from 'd3-shape';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { dayCustomColors, dayData, dayDataLine, monthCustomColors, monthData, monthDataLine, sleepingStates, weekCustomColors, weekData, weekDataLine } from './data';
+import {
+  dayCustomColors,
+  dayData,
+  dayDataLine,
+  monthCustomColors,
+  monthData,
+  monthDataLine,
+  sleepingStates,
+  weekCustomColors,
+  weekData,
+  weekDataLine,
+} from './data';
+import { ScaleType,Color } from '@swimlane/ngx-charts';
 
 @Component({
   selector: 'app-sleep-record',
@@ -11,9 +29,8 @@ import { dayCustomColors, dayData, dayDataLine, monthCustomColors, monthData, mo
   styleUrls: ['./sleep-record.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class SleepRecordComponent implements OnInit {
+export class SleepRecordComponent implements OnInit{
   chartView = true;
-  private readonly ngUnsubscribe = new Subject<void>();
   matTabLabel: HTMLElement[] | null = null;
   darkMode$: Observable<boolean> = this.darkModeService.darkMode$;
   datesRange = [new Date(Date.now() - 604800000), Date.now()];
@@ -24,9 +41,19 @@ export class SleepRecordComponent implements OnInit {
   dataLine = [dayDataLine, weekDataLine, monthDataLine];
   customColors = [dayCustomColors, weekCustomColors, monthCustomColors];
 
-  curve:any=curveBasis;
+  curve: any = curveBasis;
+  customSchemeType = ScaleType.Linear;
+  customColor: Color = {
+    name: 'customColor',
+    selectable: true,
+    group: ScaleType.Linear,
+    domain: ['#0B54FE', '#4743EF', '#8432DF', '#8432DF','#FC0FC0' ],
+  };
 
-  constructor(private darkModeService: DarkModeService, private router: Router) {}
+  constructor(
+    private darkModeService: DarkModeService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     setTimeout(() => {
@@ -34,17 +61,6 @@ export class SleepRecordComponent implements OnInit {
         document.querySelectorAll('div.mat-tab-label')
       );
     }, 0);
-    this.darkMode$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((value) => {
-      if (this.matTabLabel) {
-        const color = value === true ? '#ffffff' : '#000000';
-        this.matTabLabel.forEach((elem) => (elem.style.color = color));
-      }
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 
   onToggle(): void {

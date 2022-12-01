@@ -98,7 +98,8 @@
 
 .mat-tab-label {
     min-width: 0 !important;
-    width: 95px !important;
+    width: 95px ;
+    color: #c2c4d1;
 }
 
 .circleBase {
@@ -114,4 +115,10 @@
 
 .type2 {
     background: linear-gradient(90deg, #fac770 0%, #e83f75 100%);
+}
+
+.ngx-charts {
+    text {
+        fill: #c2c4d1 !important;
+    }
 }

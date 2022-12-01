@@ -4,23 +4,22 @@
   </div>
 
   <mat-tab-group animationDuration="0ms" [disablePagination]="true">
-    <mat-tab label="Day">
+    <mat-tab *ngFor="let label of ['Day','Week','Month'], let i = index" [label]="label">
       <div class="row">
         <ngx-charts-line-chart
           *ngIf="!chartView"
+          [view]="[285, 185]"
           [animations]="true"
-          [legend]="false"
-          [showXAxisLabel]="false"
-          [showYAxisLabel]="false"
           [xAxis]="true"
           [yAxis]="true"
-          [yAxisTicks]="['1', '5']"
+          [yAxisTicks]="['7', '23']"
           [timeline]="false"
-          [results]="dataLine[0]"
+          [results]="dataLine[i]"
           [showGridLines]="true"
           [roundDomains]="true"
           [timeline]="false"
           [curve]="curve"
+          [schemeType]="customSchemeType"
         >
         </ngx-charts-line-chart>
         <ngx-charts-bar-vertical
@@ -28,81 +27,15 @@
           [view]="[285, 185]"
           [barPadding]="1"
           [animations]="true"
-          [gradient]="true"
+          [gradient]="false"
           [rotateXAxisTicks]="true"
           [xAxis]="true"
           [yAxis]="true"
-          [yAxisTicks]="['1', '5']"
-          [results]="data[0]"
-          [customColors]="customColors[0]"
-        ></ngx-charts-bar-vertical>
-      </div>
-    </mat-tab>
-    <mat-tab label="Week">
-      <div class="row">
-        <ngx-charts-line-chart
-          *ngIf="!chartView"
-          [animations]="true"
-          [legend]="false"
-          [showXAxisLabel]="false"
-          [showYAxisLabel]="false"
-          [xAxis]="true"
-          [yAxis]="true"
           [yAxisTicks]="['7', '23']"
-          [timeline]="false"
-          [results]="dataLine[1]"
-          [showGridLines]="true"
-          [roundDomains]="true"
-          [timeline]="false"
-          [curve]="curve"
-        >
-        </ngx-charts-line-chart>
-        <ngx-charts-bar-vertical
-          *ngIf="chartView"
-          [view]="[285, 185]"
-          [barPadding]="28"
-          [animations]="true"
-          [gradient]="true"
-          [rotateXAxisTicks]="true"
-          [yAxisTicks]="['7', '23']"
-          [xAxis]="true"
-          [yAxis]="true"
-          [results]="data[1]"
-          [customColors]="customColors[1]"
-        ></ngx-charts-bar-vertical>
-      </div>
-    </mat-tab>
-    <mat-tab label="Month">
-      <div class="row">
-        <ngx-charts-line-chart
-          *ngIf="!chartView"
-          [animations]="true"
-          [legend]="false"
-          [showXAxisLabel]="false"
-          [showYAxisLabel]="false"
-          [xAxis]="true"
-          [yAxis]="true"
-          [yAxisTicks]="['7', '23']"
-          [timeline]="false"
-          [results]="dataLine[2]"
-          [showGridLines]="true"
-          [roundDomains]="true"
-          [timeline]="false"
-          [curve]="curve"
-        >
-        </ngx-charts-line-chart>
-        <ngx-charts-bar-vertical
-          *ngIf="chartView"
-          [view]="[285, 185]"
-          [barPadding]="1"
-          [animations]="true"
-          [gradient]="true"
-          [rotateXAxisTicks]="true"
-          [yAxisTicks]="['7', '23']"
-          [xAxis]="true"
-          [yAxis]="true"
-          [results]="data[2]"
-          [customColors]="customColors[2]"
+          [results]="data[i]"
+          [customColors]="customColors[i]"
+          [schemeType]="customSchemeType"
+          [scheme]="customColor"
         ></ngx-charts-bar-vertical>
       </div>
     </mat-tab>

@@ -1,1 +1,74 @@
-<p>watch-list works!</p>
+<div class="body">
+  <div class="header center">
+    My watch list
+  </div>
+  <div class="content shade">
+    <div class="currency center column">
+      <div class="circleBase center">D</div>
+      DIS-USD.SW
+      <span class="text">Walt Disney Co.</span>
+    </div>
+    <mat-tab-group
+      headerPosition="below"
+      animationDuration="0ms"
+      [disablePagination]="true"
+    >
+      <mat-tab *ngFor="let item of data" [label]="item.tabName">
+        <span (click)="changeView()" class="right">&#8767;</span>
+        <div class="row">
+          <ngx-charts-line-chart
+            *ngIf="!chartView"
+            [view]="[285, 185]"
+            [animations]="true"
+            [showGridLines]="false"
+            [gradient]="true"
+            [results]="item.lineData"
+            [curve]="curve"
+            [scheme]="customColor"
+            [schemeType]="customSchemeType"
+            [trimXAxisTicks]="true"
+          >
+          </ngx-charts-line-chart>
+          <ngx-charts-bar-vertical
+            *ngIf="chartView"
+            [view]="[285, 185]"
+            [animations]="true"
+            [gradient]="true"
+            [results]="item.data"
+            [showGridLines]="false"
+            [barPadding]="item.barPadding"
+            [scheme]="customColor"
+            [schemeType]="customSchemeType"
+          ></ngx-charts-bar-vertical>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  <div class="analytics shade">
+    <div class="column center">
+      <span class="largeText">{{ current | currency }}</span>
+      <span
+        class="change"
+        [ngClass]="{ increase: change > 0, decrease: change < 0 }"
+      >
+        {{ change }} ({{ changePercent | percent }})</span
+      >
+    </div>
+    <div class="row">
+      <div class="column">
+        <span class="text">Open</span>
+        <span>{{ open }}</span>
+      </div>
+      <div class="column">
+        <span class="text">Hight</span>
+        <span>{{ high }}</span>
+      </div>
+      <div class="column">
+        <span class="text">Low</span>
+        <span>{{ low }}</span>
+      </div>
+    </div>
+  </div>
+  <button (click)="onToggle()">Change mode</button>
+  <button (click)="goToSleepRecord()">Go to sleep record</button>
+</div>
