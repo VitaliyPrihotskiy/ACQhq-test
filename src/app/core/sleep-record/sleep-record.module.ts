@@ -6,6 +6,7 @@ import { SleepRecordRoutingModule } from './sleep-record-routing.module';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { MatCardModule } from '@angular/material/card';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [SleepRecordComponent],
@@ -15,6 +16,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     SleepRecordRoutingModule,
     MatCardModule,
     NgxChartsModule,
+    SharedModule,
     NgCircleProgressModule.forRoot({
       radius: 35,
       space: -5,

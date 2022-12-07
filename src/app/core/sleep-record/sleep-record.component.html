@@ -2,9 +2,17 @@
   <div class="header">
     Sleep Record <span (click)="changeView()"> &#8767;</span>
   </div>
-
+  <app-bar-chart
+    [chartData]="cricketersInfo"
+    [chartHeight]="300"
+    [chartWidth]="500"
+    [chartMetaInfo]="metaInfo"
+  ></app-bar-chart>
   <mat-tab-group animationDuration="0ms" [disablePagination]="true">
-    <mat-tab *ngFor="let label of ['Day','Week','Month'], let i = index" [label]="label">
+    <mat-tab
+      *ngFor="let label of ['Day', 'Week', 'Month']; let i = index"
+      [label]="label"
+    >
       <div class="row">
         <ngx-charts-line-chart
           *ngIf="!chartView"

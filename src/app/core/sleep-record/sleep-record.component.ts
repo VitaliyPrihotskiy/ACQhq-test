@@ -74,4 +74,25 @@ export class SleepRecordComponent implements OnInit{
   goToWatchList(): void {
     this.router.navigate(['watch-list']);
   }
+
+  cricketersInfo = [
+    {'name':'Sachin T','centuries':49},  
+    {'name':'Kohli  V','centuries':43},
+    {'name':'Rohit  S','centuries':28},
+    {'name':' Ganguly ','centuries':22},
+    {'name':'Dhawan','centuries':17},  
+  ];
+
+metaInfo = {
+'title':'Indian cricketers with Most Centuries',
+'titleColor':'white',
+'titleFont': '20px sans-serif',
+'columnTitleColor': 'white',
+'columnFont': '12px sans-serif',
+'footerTitle':'Cricketer',
+'footerColor':'#c1d0cd',
+'footerFont': '12px sans-serif',
+'leftaxisColor': '#c1d0cd',
+'leftaxisFont': '12px sans-serif',
+}
 }
