@@ -2,54 +2,39 @@
   <div class="header">
     Sleep Record <span (click)="changeView()"> &#8767;</span>
   </div>
-  <app-bar-chart
-    [chartData]="cricketersInfo"
-    [chartHeight]="300"
-    [chartWidth]="500"
-    [chartMetaInfo]="metaInfo"
-  ></app-bar-chart>
-  <mat-tab-group animationDuration="0ms" [disablePagination]="true">
-    <mat-tab
-      *ngFor="let label of ['Day', 'Week', 'Month']; let i = index"
-      [label]="label"
+  <div class="chart-tabs row">
+    <div class="chart-tab" (click)="changeCurrentTab(1)">Day</div>
+    <div class="chart-tab" (click)="changeCurrentTab(2)">Week</div>
+    <div class="chart-tab" (click)="changeCurrentTab(3)">Month</div>
+  </div>
+  <div id="ink-bar-row" class="row"><div class="ink-bar"></div></div>
+  <div class="row">
+    <ngx-charts-line-chart
+      *ngIf="!chartBarView"
+      [view]="[285, 185]"
+      [animations]="true"
+      [xAxis]="true"
+      [yAxis]="true"
+      [yAxisTicks]="['7', '23']"
+      [timeline]="false"
+      [results]="[{name: 'Sleep Record', series: chartData }]"
+      [showGridLines]="true"
+      [roundDomains]="true"
+      [timeline]="false"
+      [curve]="curve"
+      [schemeType]="customSchemeType"
     >
-      <div class="row">
-        <ngx-charts-line-chart
-          *ngIf="!chartView"
-          [view]="[285, 185]"
-          [animations]="true"
-          [xAxis]="true"
-          [yAxis]="true"
-          [yAxisTicks]="['7', '23']"
-          [timeline]="false"
-          [results]="dataLine[i]"
-          [showGridLines]="true"
-          [roundDomains]="true"
-          [timeline]="false"
-          [curve]="curve"
-          [schemeType]="customSchemeType"
-        >
-        </ngx-charts-line-chart>
-        <ngx-charts-bar-vertical
-          *ngIf="chartView"
-          [view]="[285, 185]"
-          [barPadding]="1"
-          [animations]="true"
-          [gradient]="false"
-          [rotateXAxisTicks]="true"
-          [xAxis]="true"
-          [yAxis]="true"
-          [yAxisTicks]="['7', '23']"
-          [results]="data[i]"
-          [customColors]="customColors[i]"
-          [schemeType]="customSchemeType"
-          [scheme]="customColor"
-        ></ngx-charts-bar-vertical>
-      </div>
-    </mat-tab>
-  </mat-tab-group>
+    </ngx-charts-line-chart>
+    <app-bar-chart
+      *ngIf="chartBarView"
+      [chartData]="chartData"
+      [chartHeight]="185"
+      [chartWidth]="285"
+      [chartMetaInfo]="metaInfo"
+    ></app-bar-chart>
+  </div>
   <div class="sleep-status">
-    <div class="row left" *ngIf="chartView">
+    <div class="row left" *ngIf="chartBarView">
       <div class="circleBase type1"></div>
       <span class="grey">Above average</span>
       <div class="circleBase type2"></div>

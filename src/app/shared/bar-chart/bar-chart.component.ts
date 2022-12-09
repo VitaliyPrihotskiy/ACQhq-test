@@ -1,51 +1,44 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { ColumnData } from './../../shared/models/column-data.model';
 
 @Component({
   selector: 'app-bar-chart',
   templateUrl: './bar-chart.component.html',
   styleUrls: ['./bar-chart.component.scss'],
 })
-export class BarChartComponent implements OnInit {
-  @Input() chartData: any;
+export class BarChartComponent implements OnInit,OnChanges {
+  @Input() chartData: ColumnData[] = [];
   @Input() chartWidth: any;
   @Input() chartHeight: any;
   @Input() chartMetaInfo: any;
 
-  @Input() chartContainerWidth: number = 400;
-  @Input() chartContainerHeight: number = 300;
-
   constructor() {}
 
-  ngOnInit() {
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.drawAnimation();
+    }, 0);
+  }
+
+  ngOnChanges(): void {
+    this.drawAnimation();
+  }
+
+  drawAnimation(): void {
     const canvas = <HTMLCanvasElement>document.getElementById('barchart');
     const context = canvas.getContext('2d');
     if (context) {
-      context.fillStyle = '#262a33';
-      context.fillRect(0, 0, this.chartWidth, this.chartHeight);
-      this.drawBarChart(context);
-      this.addTitleToChart(context);
-      this.addFooterToChart(context);
-      this.addHorizontalLines(context);
+      for (let i = 1; i <= 30; i++) {
+        const animationStage = (1 / 30) * i;
+        setTimeout(() => {
+          context.clearRect(0,0, canvas.width, canvas.height);
+          this.drawBarChart(context, animationStage);
+          this.addHorizontalLines(context);
+        }, animationStage*1000);
+      }
     }
   }
-
-  addTitleToChart(context: CanvasRenderingContext2D): void {
-    context.font = this.chartMetaInfo.titleFont;
-    context.fillStyle = this.chartMetaInfo.titleColor;
-    context.fillText(this.chartMetaInfo.title, 100, 30);
-  }
-
-  addFooterToChart(context: CanvasRenderingContext2D): void {
-    context.font = this.chartMetaInfo.footerFont;
-    context.fillStyle = this.chartMetaInfo.footerColor;
-    context.fillText(
-      this.chartMetaInfo.footerTitle,
-      this.chartWidth / 2,
-      this.chartHeight - 10
-    );
-  }
-
-  addColumnName(
+  addText(
     context: CanvasRenderingContext2D,
     name: string,
     xpos: number,
@@ -59,50 +52,118 @@ export class BarChartComponent implements OnInit {
   addHorizontalLines(context: CanvasRenderingContext2D): void {
     context.font = this.chartMetaInfo.leftaxisFont;
     context.fillStyle = this.chartMetaInfo.leftaxisColor;
+    context.lineWidth = 0.5;
+    context.strokeStyle = this.chartMetaInfo.leftaxisColor;
 
-    for (var i = 0; i < 11; i++) {
-      context.lineWidth = 0.5;
-      context.beginPath();
-      context.moveTo(25, 20 * i + 40);
-      context.lineTo(475, 20 * i + 40);
-      context.strokeStyle = this.chartMetaInfo.leftaxisColor;
-      context.stroke();
+    const yTop = 30;
+    const yBottom = this.chartHeight - 20;
+    const xStart = 35;
+    const xEnd = this.chartWidth - 15;
+
+    context.beginPath();
+    context.moveTo(xStart, yTop);
+    context.lineTo(xEnd, yTop);
+    context.stroke();
+    this.addText(context, '23:00', 10, yTop);
+
+    context.beginPath();
+    context.moveTo(xStart, yBottom);
+    context.lineTo(xEnd, yBottom);
+    context.stroke();
+    this.addText(context, '7:00', 10, yBottom);
+  }
+
+  drawBarChart(context: CanvasRenderingContext2D, animationStage:number): void {
+    const maxValue = this.chartData.reduce((a, b) =>
+      a.value > b.value ? a : b
+    ).value;
+    const yTop = 30;
+    const yBottom = this.chartHeight - 20;
+    const xStart = 35;
+    const xEnd = this.chartWidth - 15;
+    const width = (xEnd - xStart) / (this.chartData.length * 3 - 2);
+    const height = yBottom - 10;
+
+    for (let i = 0; i < this.chartData.length; i++) {
+      const column = this.chartData[i];
+      const x = xStart + 3 * i * width;
+      //Create column
+      context.fillStyle = this.getGradient(context, this.chartData[i].color);
+      this.roundRect(
+        context,
+        x,
+        yBottom,
+        width,
+        (column.value / maxValue) * height * animationStage
+      ).fill();
+      //Create shade
+      context.fillStyle = this.getGradient(
+        context,
+        this.chartData[i].color,
+        true
+      );
+      this.roundRect(
+        context,
+        x + width * 0.9,
+        yBottom + width / 2,
+        width,
+        (column.value / maxValue) * height * animationStage
+      ).fill();
+      if (this.chartData.length>10) {
+        if (i%2 ===0){
+          this.addText(context, column.name, x + width / 4, yBottom + 15);
+        }
+      } else {
+        this.addText(context, column.name, x + width / 4, yBottom + 15);
+      }
     }
   }
 
-  addColumnHead(
+  private roundRect(
     context: CanvasRenderingContext2D,
-    name: string,
-    xpos: number,
-    ypos: number
-  ): void {
-    context.font = this.chartMetaInfo.columnFont;
-    context.fillStyle = this.chartMetaInfo.columnTitleColor;
-    context.fillText(name, xpos, ypos);
+    x: number,
+    y: number,
+    w: number,
+    h: number,
+    r?: number
+  ): CanvasRenderingContext2D {
+    r = r ? r : w / 2;
+    if (w < 2 * r) r = w / 2;
+    if (h < 2 * r) r = h / 2;
+    context.beginPath();
+    context.moveTo(x + r, y);
+    context.arcTo(x + w, y, x + w, y - h, r);
+    context.arcTo(x + w, y - h, x, y - h, r);
+    context.arcTo(x, y - h, x, y, r);
+    context.arcTo(x, y, x + r, y, r);
+    context.closePath();
+    return context;
   }
 
-  drawBarChart(context: CanvasRenderingContext2D): void {
-    for (let cricketer = 0; cricketer < this.chartData.length; cricketer++) {
-      context.fillStyle = '#36b5d8';
-      let cricketerInfo = this.chartData[cricketer];
-      context.fillRect(
-        25 + cricketer * 100,
-        this.chartHeight - cricketerInfo['centuries'] * 2 - 60,
-        50,
-        cricketerInfo['centuries'] * 2
-      );
-      this.addColumnName(
-        context,
-        cricketerInfo.name,
-        25 + cricketer * 100,
-        this.chartHeight - 40
-      );
-      this.addColumnHead(
-        context,
-        cricketerInfo['centuries'],
-        45 + cricketer * 100,
-        this.chartHeight - cricketerInfo['centuries'] * 2 - 65
-      );
+  private getGradient(
+    context: CanvasRenderingContext2D,
+    color: 'pink' | 'yellow',
+    shade = false
+  ): CanvasGradient {
+    const grd = context.createLinearGradient(0, 0, 0, 200);
+    if (!shade) {
+      if (color === 'pink') {
+        grd.addColorStop(0, '#FC0FC0');
+        grd.addColorStop(1, '#0B54FE');
+      } else {
+        grd.addColorStop(0, '#f9c570');
+        grd.addColorStop(1, '#e94275');
+      }
+    } else {
+      if (color === 'pink') {
+        grd.addColorStop(0, 'rgba(252,15,192,0.25)');
+        grd.addColorStop(1, 'rgba(11,84,254,0.25)');
+      } else {
+        grd.addColorStop(0, 'rgba(249,197,112,0.25)');
+        grd.addColorStop(1, 'rgba(233,66,117,0.25)');
+      }
     }
+
+    return grd;
   }
 }
