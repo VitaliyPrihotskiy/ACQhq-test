@@ -12,6 +12,8 @@ export class BarChartComponent implements OnInit,OnChanges {
   @Input() chartHeight: any;
   @Input() chartMetaInfo: any;
 
+  firstChange = true;
+  
   constructor() {}
 
   ngOnInit(): void {
@@ -21,7 +23,11 @@ export class BarChartComponent implements OnInit,OnChanges {
   }
 
   ngOnChanges(): void {
-    this.drawAnimation();
+    if (this.firstChange) {
+      this.firstChange = false;
+    } else {
+      this.drawAnimation();
+    }
   }
 
   drawAnimation(): void {

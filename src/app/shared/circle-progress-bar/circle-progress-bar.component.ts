@@ -1,4 +1,10 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 
 @Component({
   selector: 'app-circle-progress-bar',
@@ -39,7 +45,7 @@ export class CircleProgressBarComponent implements OnInit, OnChanges {
     }, 0);
   }
 
-  ngOnChanges():void {
+  ngOnChanges(): void {
     if (this.firstChange) {
       this.firstChange = false;
     } else {
@@ -50,51 +56,49 @@ export class CircleProgressBarComponent implements OnInit, OnChanges {
     if (this.context) {
       this.gradient = this.getGradient(this.context, this.outerStrokeColor);
     }
-    setTimeout(() => {
-      if (this.context) {
-        const posX = this.canvas.width / 2;
-        const posY = this.canvas.height / 2;
-        const fps = 500 / this.percent;
-        const result = this.percent;
-        let procent = 0;
+    if (this.context) {
+      const posX = this.canvas.width / 2;
+      const posY = this.canvas.height / 2;
+      const fps = 500 / this.percent;
+      const result = this.percent;
+      let procent = 0;
 
-        this.context.lineCap = 'round';
+      this.context.lineCap = 'round';
 
-        let acrInterval = setInterval(() => {
-          procent += 1;
-          if (this.context) {
-            this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      let acrInterval = setInterval(() => {
+        procent += 1;
+        if (this.context) {
+          this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-            this.spanProcent.innerHTML = procent.toFixed();
+          this.spanProcent.innerHTML = procent.toFixed();
 
-            this.context.beginPath();
-            this.context.arc(
-              posX,
-              posY,
-              35,
-              (Math.PI / 180) * 270,
-              (Math.PI / 180) * (270 + 360)
-            );
-            this.context.strokeStyle = this.innerStrokeColor;
-            this.context.lineWidth = 5;
-            this.context.stroke();
+          this.context.beginPath();
+          this.context.arc(
+            posX,
+            posY,
+            35,
+            (Math.PI / 180) * 270,
+            (Math.PI / 180) * (270 + 360)
+          );
+          this.context.strokeStyle = this.innerStrokeColor;
+          this.context.lineWidth = 5;
+          this.context.stroke();
 
-            this.context.beginPath();
-            this.context.strokeStyle = this.gradient;
-            this.context.lineWidth = 5;
-            this.context.arc(
-              posX,
-              posY,
-              35,
-              (Math.PI / 180) * 270,
-              (Math.PI / 180) * (270 + (360 / 100) * procent)
-            );
-            this.context.stroke();
-            if (procent >= result) clearInterval(acrInterval);
-          }
-        }, fps);
-      }
-    }, 0);
+          this.context.beginPath();
+          this.context.strokeStyle = this.gradient;
+          this.context.lineWidth = 5;
+          this.context.arc(
+            posX,
+            posY,
+            35,
+            (Math.PI / 180) * 270,
+            (Math.PI / 180) * (270 + (360 / 100) * procent)
+          );
+          this.context.stroke();
+          if (procent >= result) clearInterval(acrInterval);
+        }
+      }, fps);
+    }
   }
 
   private getGradient(
