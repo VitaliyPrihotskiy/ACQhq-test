@@ -34,7 +34,7 @@ export class BarChartComponent implements OnInit,OnChanges {
           context.clearRect(0,0, canvas.width, canvas.height);
           this.drawBarChart(context, animationStage);
           this.addHorizontalLines(context);
-        }, animationStage*1000);
+        }, animationStage*500);
       }
     }
   }

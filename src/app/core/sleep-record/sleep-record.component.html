@@ -17,7 +17,7 @@
       [yAxis]="true"
       [yAxisTicks]="['7', '23']"
       [timeline]="false"
-      [results]="[{name: 'Sleep Record', series: chartData }]"
+      [results]="[{ name: 'Sleep Record', series: chartData }]"
       [showGridLines]="true"
       [roundDomains]="true"
       [timeline]="false"
@@ -83,16 +83,12 @@
     <h3>Sleeping State</h3>
     <div class="row">
       <div class="progress" *ngFor="let sleepingState of sleepingStates">
-        <circle-progress
+        <app-circle-progress-bar
+          [barName]="sleepingState.name"
           [percent]="sleepingState.rate"
-          [titleColor]="(darkMode$ | async) ? '#fafbfb' : '#0d1239'"
-          [unitsColor]="(darkMode$ | async) ? '#fafbfb' : '#0d1239'"
           [innerStrokeColor]="(darkMode$ | async) ? '#353958' : '#f4f4f6'"
           [outerStrokeColor]="sleepingState.outerStrokeColor"
-          [outerStrokeGradientStopColor]="
-            sleepingState.outerStrokeGradientStopColor
-          "
-        ></circle-progress>
+        ></app-circle-progress-bar>
         <span class="grey">{{ sleepingState.name }}</span>
       </div>
     </div>

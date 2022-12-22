@@ -1,20 +1,21 @@
-export const sleepingStates = [
+export const sleepingStates: {
+  rate: number;
+  name: string;
+  outerStrokeColor: 'pink' | 'yellow' | 'blue';
+}[] = [
   {
     rate: 20,
     name: 'Awake',
-    outerStrokeColor: '#fac770',
-    outerStrokeGradientStopColor: '#e83f75',
+    outerStrokeColor: 'pink',
   },
   {
     rate: 50,
     name: 'Light',
-    outerStrokeColor: '#f94ff0',
-    outerStrokeGradientStopColor: '#7e24fc',
+    outerStrokeColor: 'yellow',
   },
   {
     rate: 30,
     name: 'Deep',
-    outerStrokeColor: '#3c81e8',
-    outerStrokeGradientStopColor: '#2c3ff3',
+    outerStrokeColor: 'blue',
   },
 ];
