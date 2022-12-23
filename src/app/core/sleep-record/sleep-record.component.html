@@ -9,6 +9,13 @@
   </div>
   <div id="ink-bar-row" class="row"><div class="ink-bar"></div></div>
   <div class="row">
+    <app-line-chart
+      *ngIf="chartBarView"
+      [chartData]="chartData"
+      [chartHeight]="185"
+      [chartWidth]="285"
+      [chartMetaInfo]="metaInfo"
+    ></app-line-chart>
     <ngx-charts-line-chart
       *ngIf="!chartBarView"
       [view]="[285, 185]"
@@ -25,13 +32,13 @@
       [schemeType]="customSchemeType"
     >
     </ngx-charts-line-chart>
-    <app-bar-chart
+    <!-- <app-bar-chart
       *ngIf="chartBarView"
       [chartData]="chartData"
       [chartHeight]="185"
       [chartWidth]="285"
       [chartMetaInfo]="metaInfo"
-    ></app-bar-chart>
+    ></app-bar-chart> -->
   </div>
   <div class="sleep-status">
     <div class="row left" *ngIf="chartBarView">
